@@ -7,11 +7,10 @@ from skopt import BayesSearchCV
 from scipy.stats import loguniform, uniform
 import time
 
-# Read data
-df = pd.read_csv('students.csv')
-directory = 'students_plots'
+filename = 'students'  # students, diabetes, boston
+df = pd.read_csv(f'{filename}.csv')
+directory = f'{filename}_plots'
 
-# Prepare data
 X = df.iloc[:, :-1].values
 y = df.iloc[:, -1].values
 
@@ -22,7 +21,7 @@ std = np.std(X_train, axis=0)
 X_train = (X_train - np.mean(X_train, axis=0)) / np.std(X_train, axis=0)
 X_test = (X_test - mean) / std
 
-# Function to perform search
+
 def perform_search(name, model, params, search_type, X_train, y_train, X_test, y_test):
     search = None  # Initialize search variable
     start_time = time.time()
@@ -54,8 +53,6 @@ def perform_search(name, model, params, search_type, X_train, y_train, X_test, y
     return best_model, search_df if search else best_model, duration
 
 
-
-# List of models and their parameters
 models = [
     ('Linear Regression', LinearRegression(), {}, 'grid'),
     ('Ridge', Ridge(), {'alpha': [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]}, 'grid'),
@@ -73,23 +70,18 @@ models = [
     ('ElasticNet', ElasticNet(), {'alpha': (1e-4, 1e2), 'l1_ratio': (0.1, 0.9)}, 'bayes')
 ]
 
-# List to store results
 results_combined = []
 
-# Iterate over models
 for name, model, params, search_type in models:
-    best_model, search_results, duration = perform_search(name, model, params, search_type, X_train, y_train, X_test, y_test)
-
-    # Evaluate model performance
+    best_model, search_results, duration = perform_search(name, model, params, search_type, X_train, y_train, X_test,
+                                                          y_test)
     predictions = best_model.predict(X_test)
+
     rmse = np.sqrt(mean_squared_error(y_test, predictions))
     cv = cross_val_score(estimator=best_model, X=X_train, y=y_train, cv=10, scoring='neg_root_mean_squared_error')
     test_score = best_model.score(X_test, y_test)
     train_score = best_model.score(X_train, y_train)
-    # print type of search results
 
-
-    # Store results
     result = {
         'Model': name,
         'Test Score': test_score,
@@ -101,14 +93,9 @@ for name, model, params, search_type in models:
     }
     results_combined.append(result)
 
-
-# Convert results to DataFrame
 results_combined_df = pd.DataFrame(results_combined)
-
-# Save results to CSV
 results_combined_df.to_csv('results_combined.csv', index=False)
 
-# Print overall results
 print('Overall Results:')
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 200)

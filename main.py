@@ -115,14 +115,14 @@ for name, model, params in models:
     #plt.show()
     plt.clf()
 
-# Create a DataFrame from the results
+
 results_df = pd.DataFrame(results)
 print('Overall Results for grid search:')
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 400)
 print(results_df)
 
-bar_width = 0.4  # Adjust as needed
+bar_width = 0.4
 colours = {'Linear Regression': 'green', 'Ridge': 'blue', 'Lasso': 'orange', 'ElasticNet': 'magenta'}
 
 
@@ -139,15 +139,8 @@ def plot_scores(df, score_col, title, filename):
     plt.clf()
 
 
-# Plot test scores
 plot_scores(results_df, 'Test Score', 'Test Scores for different models', 'test_scores')
-
-# Plot train scores
 plot_scores(results_df, 'Train Score', 'Train Scores for different models', 'train_scores')
-
-# Plot RMSE
 plot_scores(results_df, 'RMSE', 'RMSE for different models', 'rmse')
-
-# Plot cross validation scores
 plot_scores(results_df, 'Cross Validation Score', 'Cross Validation Scores for different models',
             'cross_validation_scores')
