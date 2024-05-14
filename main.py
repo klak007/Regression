@@ -25,10 +25,6 @@ y = df.iloc[:, -1].values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=25)
 
-# model = LinearRegression()
-# model.fit(X_train, y_train)
-# predictions = model.predict(X_test)
-
 
 # standardyzacja/ normalizacja danych - odchylenie standardowe = 1, srednia = 0
 # czemu nie dzielimy testu przez jego srednia i odchylenie standardowe?
@@ -123,60 +119,12 @@ for name, model, params in models:
 results_df = pd.DataFrame(results)
 print('Overall Results for grid search:')
 pd.set_option('display.max_columns', None)
-pd.set_option('display.width', 200)
+pd.set_option('display.width', 400)
 print(results_df)
 
 bar_width = 0.4  # Adjust as needed
 colours = {'Linear Regression': 'green', 'Ridge': 'blue', 'Lasso': 'orange', 'ElasticNet': 'magenta'}
 
-
-# # Plot test scores
-# plt.figure(figsize=(7, 4))
-# for model, color in colours.items():
-#     plt.bar(results_df[results_df['Model'] == model]['Model'], results_df[results_df['Model'] == model]['Test Score'], color=color, width=bar_width)
-# plt.xlabel('Model')
-# plt.ylabel('Test Score')
-# plt.title('Test Scores for different models')
-# plt.ylim(min(results_df['Test Score']) - 0.01, max(results_df['Test Score']) + 0.01)  # Set y-axis limits
-# plt.savefig(f'{directory}/test_scores.png')
-# plt.show()
-# plt.clf()
-#
-# # Plot train scores
-# plt.figure(figsize=(7, 4))
-# for model, color in colours.items():
-#     plt.bar(results_df[results_df['Model'] == model]['Model'], results_df[results_df['Model'] == model]['Train Score'], color=color, width=bar_width)
-# plt.xlabel('Model')
-# plt.ylabel('Train Score')
-# plt.title('Train Scores for different models')
-# plt.ylim(min(results_df['Train Score']) - 0.01, max(results_df['Train Score']) + 0.01)  # Set y-axis limits
-# plt.savefig(f'{directory}/train_scores.png')
-# plt.show()
-# plt.clf()
-#
-# # Plot RMSE
-# plt.figure(figsize=(7, 4))
-# for model, color in colours.items():
-#     plt.bar(results_df[results_df['Model'] == model]['Model'], results_df[results_df['Model'] == model]['RMSE'], color=color, width=bar_width)
-# plt.xlabel('Model')
-# plt.ylabel('RMSE')
-# plt.title('RMSE for different models')
-# plt.ylim(min(results_df['RMSE']) - 0.01, max(results_df['RMSE']) + 0.01)  # Set y-axis limits
-# plt.savefig(f'{directory}/rmse.png')
-# plt.show()
-# plt.clf()
-#
-# # Plot cross validation scores
-# plt.figure(figsize=(7, 4))
-# for model, color in colours.items():
-#     plt.bar(results_df[results_df['Model'] == model]['Model'], results_df[results_df['Model'] == model]['Cross Validation Score'], color=color, width=bar_width)
-# plt.xlabel('Model')
-# plt.ylabel('Cross Validation Score')
-# plt.title('Cross Validation Scores for different models')
-# plt.ylim(min(results_df['Cross Validation Score']) - 0.01, max(results_df['Cross Validation Score']) + 0.01)  # Set y-axis limits
-# plt.savefig(f'{directory}/cross_validation_scores.png')
-# plt.show()
-# plt.clf()
 
 def plot_scores(df, score_col, title, filename):
     plt.figure(figsize=(7, 4))
