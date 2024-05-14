@@ -1,0 +1,13 @@
+                Model  Test Score  Train Score      RMSE  Cross Validation Score Search Type
+0   Linear Regression    0.828983     0.794211  0.064602                0.063624        grid
+1               Ridge    0.828865     0.794202  0.064624                0.063609        grid
+2               Lasso    0.828345     0.793879  0.064722                0.063412        grid
+3          ElasticNet    0.827865     0.793807  0.064813                0.063386        grid
+4   Linear Regression    0.828983     0.794211  0.064602                0.063624      random
+5               Ridge    0.828239     0.794021  0.064742                0.063586      random
+6               Lasso    0.828151     0.793835  0.064759                0.063393      random
+7          ElasticNet    0.828179     0.793852  0.064754                0.063388      random
+8   Linear Regression    0.828983     0.794211  0.064602                0.063624       bayes
+9               Ridge    0.828229     0.794017  0.064744                0.063586       bayes
+10              Lasso    0.828080     0.793818  0.064772                0.063396       bayes
+11         ElasticNet    0.828973     0.794210  0.064604                0.063618       bayes
