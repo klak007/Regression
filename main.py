@@ -17,7 +17,7 @@ warnings.filterwarnings('ignore', category=FutureWarning)
 colors = ['blue'] # , 'green', 'red', 'cyan', 'magenta', 'yellow', 'black'
 colors2 = ['olive', 'purple', 'teal', 'pink', 'brown', 'gray', 'orange']
 
-filename = 'diabetes' # students, diabetes, boston
+filename = 'boston' # students, diabetes, boston
 df = pd.read_csv(f'{filename}.csv')
 directory = f'{filename}_plots'
 
@@ -32,7 +32,7 @@ if not os.path.exists(f'{directory}/research'):
 corr = df.iloc[:, :-1].corr()
 mask = np.zeros_like(corr, dtype=bool)
 mask[np.triu_indices_from(mask)] = True
-print("corr:", corr)
+
 with sns.axes_style("white"):
     f, ax = plt.subplots(figsize=(12, 12))
     sns.heatmap(corr, mask=mask, square=True, annot=True, fmt=".2f", linewidths=.8, cmap="coolwarm",
