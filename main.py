@@ -8,17 +8,41 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
-
+import seaborn as sns
 import warnings
+from collections import Counter
 
 warnings.filterwarnings('ignore', category=FutureWarning)
 
 colors = ['blue'] # , 'green', 'red', 'cyan', 'magenta', 'yellow', 'black'
 colors2 = ['olive', 'purple', 'teal', 'pink', 'brown', 'gray', 'orange']
 
-filename = 'boston' # students, diabetes, boston
+filename = 'diabetes' # students, diabetes, boston
 df = pd.read_csv(f'{filename}.csv')
 directory = f'{filename}_plots'
+
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+if not os.path.exists(f'{directory}/features'):
+    os.makedirs(f'{directory}/features')
+if not os.path.exists(f'{directory}/research'):
+    os.makedirs(f'{directory}/research')
+
+corr = df.iloc[:, :-1].corr()
+mask = np.zeros_like(corr, dtype=bool)
+mask[np.triu_indices_from(mask)] = True
+print("corr:", corr)
+with sns.axes_style("white"):
+    f, ax = plt.subplots(figsize=(12, 12))
+    sns.heatmap(corr, mask=mask, square=True, annot=True, fmt=".2f", linewidths=.8, cmap="coolwarm",
+                     annot_kws={"size": 30})  # Add annotation with font size 8
+
+    plt.title('Correlation Matrix of Features')
+    plt.subplots_adjust(left=0.2, right=1, bottom=0.1, top=0.95)  # Adjust the spacin
+
+    plt.savefig(f'{directory}/research/correlation_matrix.png')
+    plt.show()
 
 X = df.iloc[:, :-1].values
 y = df.iloc[:, -1].values
@@ -57,8 +81,8 @@ for i in range(X_test.shape[1]):
     plt.ylabel(f'{df.columns[-1]}')
     plt.title(f'{feature_names[i]} vs {df.columns[-1]}')
     plt.legend()
-    plt.savefig(f'{directory}/{feature_names[i]}_vs_{df.columns[-1].replace(" ", "_")}.png')
-    plt.show()
+    plt.savefig(f'{directory}/features/{feature_names[i].replace(" ", "_")}_vs_{df.columns[-1].replace(" ", "_")}.png')
+    # plt.show()
     plt.clf()
 
 # Define the parameter grids for the models
@@ -111,7 +135,7 @@ for name, model, params in models:
     plt.ylabel('Predicted')
     plt.plot([0, max(y_test)], [0, max(y_test)], color='red', lw=1, ls='--')
     plt.title(f'Actual vs Predicted for {name}')
-    plt.savefig(f'{directory}/actual_vs_predicted_{name}.png')
+    plt.savefig(f'{directory}/research/actual_vs_predicted_{name}.png')
     #plt.show()
     plt.clf()
 
@@ -126,7 +150,7 @@ bar_width = 0.4
 colours = {'Linear Regression': 'green', 'Ridge': 'blue', 'Lasso': 'orange', 'ElasticNet': 'magenta'}
 
 
-def plot_scores(df, score_col, title, filename):
+def plot_scores(df, score_col, title, score_type):
     plt.figure(figsize=(7, 4))
     for model, color in colours.items():
         plt.bar(df[df['Model'] == model]['Model'], df[df['Model'] == model][score_col], color=color, width=bar_width)
@@ -134,7 +158,7 @@ def plot_scores(df, score_col, title, filename):
     plt.ylabel(score_col)
     plt.title(title)
     plt.ylim(min(df[score_col]) - 0.01, max(df[score_col]) + 0.01)  # Set y-axis limits
-    plt.savefig(f'{directory}/{filename}.png')
+    plt.savefig(f'{directory}/research/{score_type}.png')
     # plt.show()
     plt.clf()
 

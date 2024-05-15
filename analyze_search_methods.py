@@ -1,6 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
+
+if not os.path.exists('search_methods_plots'):
+    os.makedirs('search_methods_plots')
+
+if not os.path.exists('results_combined.csv'):
+    # make error message
+    print('No results to analyze')
 results_combined = pd.read_csv('results_combined.csv')
 
 pd.set_option('display.max_columns', None)
@@ -33,7 +41,7 @@ for model_name in model_names:
     plt.ylim(max(0, filtered_df['Test Score'].min() - delta),
              filtered_df['Test Score'].max() + delta)
     plt.title(f'Test Score for {model_name} Against Every Search Type')
-    plt.savefig(f'search_methods_plots/{model_name}_test_score.png')
+    plt.savefig(f'search_methods_plots/{model_name.replace(" ", "_")}_test_score.png')
     plt.show()
 
     plt.figure(figsize=(10, 6))
@@ -52,5 +60,5 @@ for model_name in model_names:
         plt.ylim(max(0, filtered_df['time taken'].min() - delta),
                  filtered_df['time taken'].max() + delta)
     plt.title(f'Time Taken for {model_name} Against Every Search Type')
-    plt.savefig(f'search_methods_plots/{model_name}_time_taken.png')
+    plt.savefig(f'search_methods_plots/{model_name.replace(" ", "_")}_time_taken.png')
     plt.show()
