@@ -10,14 +10,14 @@ import os
 import pandas as pd
 import seaborn as sns
 import warnings
-from collections import Counter
+
 
 warnings.filterwarnings('ignore', category=FutureWarning)
 
 colors = ['blue'] # , 'green', 'red', 'cyan', 'magenta', 'yellow', 'black'
 colors2 = ['olive', 'purple', 'teal', 'pink', 'brown', 'gray', 'orange']
 
-filename = 'boston' # students, diabetes, boston
+filename = 'students' # students, diabetes, boston
 df = pd.read_csv(f'{filename}.csv')
 directory = f'{filename}_plots'
 
@@ -141,7 +141,7 @@ for name, model, params in models:
 
 
 results_df = pd.DataFrame(results)
-print('Overall Results for grid search:')
+print(f'Overall Results for {filename} dataset:')
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 400)
 print(results_df)
